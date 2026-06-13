@@ -41,6 +41,41 @@ export function App() {
     refresh(sourceId);
   }
 
+  async function refreshAll() {
+    setLoading(true);
+    try {
+      const { items } = await api.refresh();
+      await refresh(activeSource);
+      console.log(`刷新完成,共 ${items} 条`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function onOpml(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setLoading(true);
+    try {
+      const { added } = await api.importOpml(await file.text());
+      alert(`导入了 ${added} 个源`);
+      await refresh();
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setLoading(false);
+      e.target.value = "";
+    }
+  }
+
+  async function removeSource(id: string, e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!confirm("取消订阅这个源?")) return;
+    await api.removeSource(id);
+    if (activeSource === id) setActiveSource(undefined);
+    await refresh(activeSource === id ? undefined : activeSource);
+  }
+
   return (
     <div className="layout">
       <aside className="sidebar">
@@ -56,6 +91,14 @@ export function App() {
           <button disabled={loading}>＋</button>
         </form>
 
+        <div className="toolbar">
+          <button onClick={refreshAll} disabled={loading}>↻ 刷新</button>
+          <label className="opml">
+            导入 OPML
+            <input type="file" accept=".opml,.xml" onChange={onOpml} hidden />
+          </label>
+        </div>
+
         <nav>
           <button className={!activeSource ? "src active" : "src"} onClick={() => pick(undefined)}>
             全部
@@ -66,7 +109,8 @@ export function App() {
               className={activeSource === s.id ? "src active" : "src"}
               onClick={() => pick(s.id)}
             >
-              {s.title}
+              <span className="src-title">{s.title}</span>
+              <span className="src-del" onClick={(e) => removeSource(s.id, e)}>×</span>
             </button>
           ))}
         </nav>

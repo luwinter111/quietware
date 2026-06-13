@@ -5,27 +5,43 @@
  */
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import {
   fetchFeed,
   fetchMany,
   parseOpml,
   enrichItem,
-  MemoryStore,
+  FileStore,
   type AiEnrichment,
 } from "@quietware/core";
 
-const store = new MemoryStore();
+// 本地优先持久化:订阅存到 ~/.quietware/reader.json,跨重启不丢。
+const store = new FileStore(join(homedir(), ".quietware", "reader.json"));
 const enrichmentCache = new Map<string, AiEnrichment>();
 
 // 首次启动塞几个默认源,开箱即用。
 const SEED = ["https://hnrss.org/frontpage", "https://www.ruanyifeng.com/blog/atom.xml"];
 
 async function seed() {
+  // 已有订阅则不再塞默认源(持久化后只在首次运行 seed)。
+  if ((await store.listSources()).length > 0) return;
   const { ok } = await fetchMany(SEED);
   for (const { source, items } of ok) {
     await store.addSource(source);
     await store.upsertItems(items);
   }
+}
+
+/** 重新抓取所有订阅源,拉取新内容。 */
+async function refreshAll() {
+  const sources = await store.listSources();
+  const { ok } = await fetchMany(sources.map((s) => s.url));
+  for (const { source, items } of ok) {
+    await store.addSource(source);
+    await store.upsertItems(items);
+  }
+  return ok.reduce((n, r) => n + r.items.length, 0);
 }
 
 const app = new Hono();
@@ -47,6 +63,18 @@ app.post("/api/sources", async (c) => {
   } catch (e) {
     return c.json({ error: `抓取失败:${(e as Error).message}` }, 502);
   }
+});
+
+/** 删除订阅源。 */
+app.delete("/api/sources/:id", async (c) => {
+  await store.removeSource(c.req.param("id"));
+  return c.json({ ok: true });
+});
+
+/** 刷新所有源。 */
+app.post("/api/refresh", async (c) => {
+  const count = await refreshAll();
+  return c.json({ ok: true, items: count });
 });
 
 /** 导入 OPML。 */

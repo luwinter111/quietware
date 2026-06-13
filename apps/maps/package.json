@@ -1,10 +1,30 @@
 {
   "name": "@quietware/maps",
   "version": "0.0.1",
-  "private": true,
-  "description": "Quietware Maps — 无竞价排名的地图/本地生活。🏗️ 脚手架(早期不建议推进)。",
+  "description": "Quietware Maps — 基于 OpenStreetMap 的无竞价排名地点搜索。",
   "license": "AGPL-3.0-only",
+  "type": "module",
   "scripts": {
-    "todo": "echo '🏗️ maps 仍是脚手架,且早期不建议推进,见 README.md'"
+    "dev": "concurrently -n api,web -c green,cyan \"tsx watch server/index.ts\" \"vite\"",
+    "server": "tsx server/index.ts",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@quietware/core": "workspace:*",
+    "hono": "^4.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
+    "@types/node": "^22.10.2"
   }
 }

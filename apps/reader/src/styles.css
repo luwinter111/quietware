@@ -23,10 +23,18 @@ body { margin: 0; background: var(--bg); color: var(--ink); }
 .add-form input { flex: 1; padding: 8px; border: 1px solid var(--line); border-radius: 8px; font-size: 13px; }
 .add-form button { width: 36px; border: none; background: var(--accent); color: #fff; border-radius: 8px; cursor: pointer; font-size: 16px; }
 
+.toolbar { display: flex; gap: 8px; margin-bottom: 14px; }
+.toolbar button, .opml { flex: 1; text-align: center; font-size: 12px; padding: 7px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--muted); cursor: pointer; }
+.toolbar button:hover, .opml:hover { color: var(--accent); border-color: var(--accent); }
+
 nav { display: flex; flex-direction: column; gap: 2px; }
-.src { text-align: left; background: none; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--ink); }
+.src { display: flex; align-items: center; justify-content: space-between; text-align: left; background: none; border: none; padding: 8px 10px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--ink); }
 .src:hover { background: var(--bg); }
 .src.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.src-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.src-del { opacity: 0; color: var(--muted); padding: 0 4px; }
+.src:hover .src-del { opacity: 1; }
+.src-del:hover { color: #c0392b; }
 
 .feed { padding: 32px; max-width: 720px; margin: 0 auto; width: 100%; }
 .hint { color: var(--muted); }

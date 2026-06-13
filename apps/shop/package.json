@@ -1,10 +1,30 @@
 {
   "name": "@quietware/shop",
   "version": "0.0.1",
-  "private": true,
-  "description": "Quietware Shop — 无广告比价/购物助手。🏗️ 脚手架(早期不建议推进)。",
+  "description": "Quietware Shop — 手动想买清单,不扒电商、不推广。",
   "license": "AGPL-3.0-only",
+  "type": "module",
   "scripts": {
-    "todo": "echo '🏗️ shop 仍是脚手架,且早期不建议推进,见 README.md'"
+    "dev": "concurrently -n api,web -c green,cyan \"tsx watch server/index.ts\" \"vite\"",
+    "server": "tsx server/index.ts",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@quietware/core": "workspace:*",
+    "hono": "^4.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
+    "@types/node": "^22.10.2"
   }
 }

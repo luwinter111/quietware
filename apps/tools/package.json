@@ -1,10 +1,30 @@
 {
   "name": "@quietware/tools",
   "version": "0.0.1",
-  "private": true,
-  "description": "Quietware Tools — 隐私优先、无广告的工具类 App(输入法/剪贴板/清理)。🏗️ 脚手架。",
+  "description": "Quietware Tools — 隐私优先、无广告的本地工具 + AI 文本助手。",
   "license": "AGPL-3.0-only",
+  "type": "module",
   "scripts": {
-    "todo": "echo '🏗️ tools 仍是脚手架,见 README.md'"
+    "dev": "concurrently -n api,web -c green,cyan \"tsx watch server/index.ts\" \"vite\"",
+    "server": "tsx server/index.ts",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@quietware/core": "workspace:*",
+    "hono": "^4.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
+    "@types/node": "^22.10.2"
   }
 }

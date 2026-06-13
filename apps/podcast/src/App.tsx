@@ -16,6 +16,7 @@ export function App() {
   const [activeShow, setActiveShow] = useState<string | undefined>();
   const [playing, setPlaying] = useState<FeedItem | null>(null);
   const [url, setUrl] = useState("");
+  const [rate, setRate] = useState(1);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   async function refresh(showId?: string) {
@@ -50,7 +51,17 @@ export function App() {
 
   function play(ep: FeedItem) {
     setPlaying(ep);
-    setTimeout(() => audioRef.current?.play(), 0);
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.playbackRate = rate;
+        audioRef.current.play();
+      }
+    }, 0);
+  }
+
+  function changeRate(r: number) {
+    setRate(r);
+    if (audioRef.current) audioRef.current.playbackRate = r;
   }
 
   return (
@@ -96,7 +107,16 @@ export function App() {
 
       {playing && (
         <footer className="player">
-          <div className="nowtitle">🎧 {playing.title}</div>
+          <div className="nowrow">
+            <div className="nowtitle">🎧 {playing.title}</div>
+            <div className="rates">
+              {[1, 1.25, 1.5, 2].map((r) => (
+                <button key={r} className={rate === r ? "rate on" : "rate"} onClick={() => changeRate(r)}>
+                  {r}×
+                </button>
+              ))}
+            </div>
+          </div>
           <audio ref={audioRef} src={playing.audioUrl} controls />
         </footer>
       )}

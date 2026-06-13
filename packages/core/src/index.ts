@@ -3,10 +3,20 @@
  *
  * 所有 Quietware 产品共用的地基:
  *  - feed:抓取/解析 RSS、Atom、播客 feed
- *  - ai:接 Claude 做摘要 + 信息降噪打分(差异化 & 收费核心)
- *  - sync:同步层接口(自托管 vs 云端托管)
+ *  - extract:网页正文/可读性提取
+ *  - ai:接 Claude 做摘要 / 降噪 / 邮件分类 / 文本整理(差异化核心)
+ *  - sync:本地优先的持久化(内存 / 文件),接口可扩展到云端
  */
 export * from "./types.js";
 export { fetchFeed, fetchMany, parseOpml } from "./feed/index.js";
-export { enrichItem, enrichMany } from "./ai/index.js";
-export { type SyncStore, MemoryStore } from "./sync/index.js";
+export { extractArticle, type Article } from "./extract/index.js";
+export {
+  enrichItem,
+  enrichMany,
+  summarizeText,
+  triageEmail,
+  organizeText,
+  type TextSummary,
+  type EmailTriage,
+} from "./ai/index.js";
+export { type SyncStore, MemoryStore, FileStore } from "./sync/index.js";
