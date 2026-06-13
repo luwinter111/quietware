@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/video",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Video — 无广告视频客户端。🏗️ 脚手架(早期不建议推进)。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ video 仍是脚手架,且早期不建议推进,见 README.md'"
+  }
+}

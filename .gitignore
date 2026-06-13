@@ -1,0 +1,27 @@
+node_modules/
+dist/
+build/
+.turbo/
+*.tsbuildinfo
+
+# env / secrets
+.env
+.env.local
+*.local
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# 本地 claude 设置
+.claude/settings.local.json
+
+# 非 Quietware 内容(用户自建,未纳入本仓库)
+OpenIME/

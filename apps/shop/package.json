@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/shop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Shop — 无广告比价/购物助手。🏗️ 脚手架(早期不建议推进)。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ shop 仍是脚手架,且早期不建议推进,见 README.md'"
+  }
+}

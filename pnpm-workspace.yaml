@@ -1,0 +1,7 @@
+packages:
+  - "packages/*"
+  - "apps/*"
+
+# esbuild(tsx/vite 依赖)需要在安装时下载平台二进制,显式允许其 build 脚本。
+allowBuilds:
+  esbuild: true

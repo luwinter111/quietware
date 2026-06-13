@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/browser",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Browser — 去广告 / 干净前端层。🏗️ 脚手架。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ browser 仍是脚手架,见 README.md'"
+  }
+}

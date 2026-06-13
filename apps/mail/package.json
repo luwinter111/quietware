@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/mail",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Mail — 干净、AI 整理的邮件客户端。🏗️ 脚手架。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ mail 仍是脚手架,见 README.md'"
+  }
+}

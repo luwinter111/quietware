@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/maps",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Maps — 无竞价排名的地图/本地生活。🏗️ 脚手架(早期不建议推进)。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ maps 仍是脚手架,且早期不建议推进,见 README.md'"
+  }
+}

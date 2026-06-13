@@ -1,0 +1,10 @@
+{
+  "name": "@quietware/tools",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Quietware Tools — 隐私优先、无广告的工具类 App(输入法/剪贴板/清理)。🏗️ 脚手架。",
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "todo": "echo '🏗️ tools 仍是脚手架,见 README.md'"
+  }
+}

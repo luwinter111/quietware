@@ -1,0 +1,35 @@
+:root {
+  --bg: #0f1115;
+  --panel: #181b21;
+  --ink: #eef0f3;
+  --muted: #8b909a;
+  --line: #262a32;
+  --accent: #7c5cff;
+  font-family: -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); }
+
+.app { max-width: 720px; margin: 0 auto; padding: 24px 20px 120px; }
+header h1 { font-size: 22px; margin: 0 0 12px; }
+header h1 span { color: var(--accent); margin-left: 4px; font-weight: 500; }
+header form { display: flex; gap: 8px; }
+header input { flex: 1; padding: 10px 12px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; color: var(--ink); }
+header button { padding: 10px 16px; background: var(--accent); color: #fff; border: none; border-radius: 10px; cursor: pointer; }
+
+.shows { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.chip { background: var(--panel); border: 1px solid var(--line); color: var(--muted); padding: 6px 14px; border-radius: 999px; cursor: pointer; font-size: 13px; }
+.chip.active { color: #fff; border-color: var(--accent); background: rgba(124, 92, 255, 0.15); }
+
+.episodes { list-style: none; padding: 0; margin: 0; }
+.ep { display: flex; align-items: center; gap: 14px; padding: 14px; border-bottom: 1px solid var(--line); }
+.ep.playing { background: rgba(124, 92, 255, 0.08); border-radius: 10px; }
+.playbtn { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--accent); color: #fff; font-size: 14px; cursor: pointer; flex-shrink: 0; }
+.epinfo { display: flex; flex-direction: column; gap: 3px; }
+.eptitle { font-size: 15px; font-weight: 500; }
+.epmeta { font-size: 12px; color: var(--muted); }
+.hint { color: var(--muted); }
+
+.player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; }
+.nowtitle { font-size: 13px; color: var(--ink); }
+.player audio { width: 100%; }
