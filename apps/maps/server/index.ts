@@ -18,7 +18,11 @@ app.get("/api/search", async (c) => {
   const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=10&addressdetails=1`;
   try {
     const res = await fetch(url, {
-      headers: { "User-Agent": "Quietware-Maps/0.1 (open-source ad-free maps; https://github.com/luwinter111/quietware)" },
+      headers: {
+        "User-Agent": "Quietware-Maps/0.1 (open-source ad-free maps; https://github.com/luwinter111/quietware)",
+        Accept: "application/json",
+        "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+      },
     });
     if (!res.ok) return c.json({ error: `Nominatim HTTP ${res.status}` }, 502);
     const raw = (await res.json()) as any[];
