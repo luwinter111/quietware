@@ -70,6 +70,71 @@ export async function enrichItem(item: FeedItem, model = DEFAULT_MODEL): Promise
   };
 }
 
+/** 通用:对任意文本做一次结构化 JSON 调用。 */
+async function jsonCall<T>(system: string, user: string, model = DEFAULT_MODEL, maxTokens = 500): Promise<T> {
+  const resp = await getClient().messages.create({
+    model,
+    max_tokens: maxTokens,
+    system,
+    messages: [{ role: "user", content: user }],
+  });
+  const raw = resp.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map((b) => b.text)
+    .join("");
+  const json = raw.slice(raw.indexOf("{"), raw.lastIndexOf("}") + 1);
+  return JSON.parse(json) as T;
+}
+
+export interface TextSummary {
+  tldr: string;
+  bullets: string[];
+}
+
+/** 对任意一段文本(网页正文、笔记等)做摘要。 */
+export function summarizeText(text: string, model = DEFAULT_MODEL): Promise<TextSummary> {
+  return jsonCall<TextSummary>(
+    `你帮用户把长文压缩成要点。返回严格 JSON:{ "tldr": "一句话(中文,≤40字)", "bullets": ["要点(中文,≤25字)", ...2-5条] }。只返回 JSON。`,
+    stripHtml(text).slice(0, 8000),
+    model,
+  );
+}
+
+export interface EmailTriage {
+  category: "重要" | "通知" | "营销" | "社交" | "其他";
+  tldr: string;
+  needsReply: boolean;
+}
+
+/** 邮件收件箱降噪:分类 + 一句话摘要 + 是否需要回复。 */
+export function triageEmail(
+  email: { subject: string; from: string; body: string },
+  model = DEFAULT_MODEL,
+): Promise<EmailTriage> {
+  return jsonCall<EmailTriage>(
+    `你是邮件收件箱降噪助手。给定一封邮件,返回严格 JSON:
+{ "category": "重要|通知|营销|社交|其他", "tldr": "一句话摘要(中文,≤30字)", "needsReply": true/false }。
+营销/推广邮件归为"营销"。只返回 JSON。`,
+    `发件人:${email.from}\n主题:${email.subject}\n正文:${stripHtml(email.body).slice(0, 4000)}`,
+    model,
+  );
+}
+
+/** 文本整理:把杂乱的速记/剪贴内容整理成干净要点。 */
+export async function organizeText(text: string, model = DEFAULT_MODEL): Promise<string> {
+  const resp = await getClient().messages.create({
+    model,
+    max_tokens: 800,
+    system: "你帮用户把杂乱的文字整理干净:去口水、分点、保留信息。直接返回整理后的中文文本,不要解释。",
+    messages: [{ role: "user", content: text.slice(0, 8000) }],
+  });
+  return resp.content
+    .filter((b): b is Anthropic.TextBlock => b.type === "text")
+    .map((b) => b.text)
+    .join("")
+    .trim();
+}
+
 /** 批量降噪,带并发上限。 */
 export async function enrichMany(
   items: FeedItem[],

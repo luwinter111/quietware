@@ -1,10 +1,30 @@
 {
   "name": "@quietware/mail",
   "version": "0.0.1",
-  "private": true,
-  "description": "Quietware Mail — 干净、AI 整理的邮件客户端。🏗️ 脚手架。",
+  "description": "Quietware Mail — AI 收件箱降噪(分类/摘要)。本地示例数据演示。",
   "license": "AGPL-3.0-only",
+  "type": "module",
   "scripts": {
-    "todo": "echo '🏗️ mail 仍是脚手架,见 README.md'"
+    "dev": "concurrently -n api,web -c green,cyan \"tsx watch server/index.ts\" \"vite\"",
+    "server": "tsx server/index.ts",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "@quietware/core": "workspace:*",
+    "hono": "^4.6.14",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.3",
+    "@types/node": "^22.10.2"
   }
 }

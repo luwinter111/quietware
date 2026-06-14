@@ -31,5 +31,9 @@ header button { padding: 10px 16px; background: var(--accent); color: #fff; bord
 .hint { color: var(--muted); }
 
 .player { position: fixed; bottom: 0; left: 0; right: 0; background: var(--panel); border-top: 1px solid var(--line); padding: 12px 20px; display: flex; flex-direction: column; gap: 8px; }
-.nowtitle { font-size: 13px; color: var(--ink); }
+.nowrow { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.nowtitle { font-size: 13px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rates { display: flex; gap: 4px; flex-shrink: 0; }
+.rate { background: none; border: 1px solid var(--line); color: var(--muted); border-radius: 6px; padding: 2px 8px; font-size: 12px; cursor: pointer; }
+.rate.on { color: #fff; border-color: var(--accent); background: rgba(124, 92, 255, 0.2); }
 .player audio { width: 100%; }

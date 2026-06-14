@@ -2,11 +2,13 @@
  * Quietware Podcast —— 后端 API。
  * 复用 @quietware/core 的 feed 引擎(它会自动识别播客 feed 的音频 enclosure)。
  */
+import { homedir } from "node:os";
+import { join } from "node:path";
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
-import { fetchFeed, fetchMany, MemoryStore } from "@quietware/core";
+import { fetchFeed, fetchMany, FileStore } from "@quietware/core";
 
-const store = new MemoryStore();
+const store = new FileStore(join(homedir(), ".quietware", "podcast.json"));
 
 // 几个公开播客 feed,开箱即用。
 const SEED = [
@@ -15,6 +17,7 @@ const SEED = [
 ];
 
 async function seed() {
+  if ((await store.listSources()).length > 0) return;
   const { ok } = await fetchMany(SEED);
   for (const { source, items } of ok) {
     await store.addSource(source);
@@ -44,6 +47,23 @@ app.post("/api/shows", async (c) => {
   } catch (e) {
     return c.json({ error: `订阅失败:${(e as Error).message}` }, 502);
   }
+});
+
+/** 取消订阅。 */
+app.delete("/api/shows/:id", async (c) => {
+  await store.removeSource(c.req.param("id"));
+  return c.json({ ok: true });
+});
+
+/** 刷新所有节目。 */
+app.post("/api/refresh", async (c) => {
+  const sources = await store.listSources();
+  const { ok } = await fetchMany(sources.map((s) => s.url));
+  for (const { source, items } of ok) {
+    await store.addSource(source);
+    await store.upsertItems(items);
+  }
+  return c.json({ ok: true });
 });
 
 /** 列出单集(只返回有音频的)。 */
